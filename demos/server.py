@@ -43,7 +43,7 @@ os.makedirs(save_dirs, exist_ok=True)
 async def productKV(request: Request):
     params = await request.json()
     product_image_base64 = params.pop('product_images')
-    product_images = base642pil(product_image_base64)
+    product_image = base642pil(product_image_base64)
     
     product_prompt = params.pop("product_prompt")
     background_prompt = params.pop("background_prompt")
@@ -51,8 +51,10 @@ async def productKV(request: Request):
     width = params.pop("width")
     save_name = params.pop("save_name")
     
+    product_image = product_image.resize((width, height))
+    
     result_image = product_obj(
-        image = product_images,
+        image = product_image,
         product_prompt = product_prompt, 
         background_prompt = background_prompt,
         image_height = height,
